@@ -1,3 +1,6 @@
+"""
+Math Quiz Game
+"""
 import random
 
 
@@ -52,7 +55,8 @@ def execute_arithmetic_operation(
         operator (str): The arithmetic operator, which can be one of '+', '-', or '*'.
 
     Returns:
-        tuple[str, int]: A tuple containing the expression as a string and the result of the expression as an integer.
+        tuple[str, int]: A tuple containing the expression as a string and the 
+        result of the expression as an integer.
 
     Raises:
         ValueError: If the operator is not one of '+', '-', or '*'.
