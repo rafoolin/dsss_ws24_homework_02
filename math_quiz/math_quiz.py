@@ -1,46 +1,153 @@
 import random
 
 
-def function_A(min, max):
+def generate_random_integer(min_value: int, max_value: int) -> int:
     """
-    Random integer.
+    Generates a random integer within the specified inclusive range [min_value, max_value].
+
+    Args:
+        min_value (int): The minimum possible value.
+        max_value (int): The maximum possible value.
+
+    Returns:
+        int: A random integer between min_value and max_value, inclusive.
+
+    Raises:
+        ValueError: If min_value is greater than max_value.
+
+    Example:
+    >>> generate_random_integer(2, 10)
+    7
+    >>> generate_random_integer(4, 5)
+    4
+    >>> generate_random_integer(6, 1)
+    ValueError
     """
-    return random.randint(min, max)
+    return random.randint(int(min_value), int(max_value))
 
 
-def function_B():
-    return random.choice(['+', '-', '*'])
+def get_random_operator() -> str:
+    """
+    Returns a random arithmetic operator from the set: '+', '-', or '*'.
+
+    Returns:
+        str: A randomly chosen arithmetic operator from '+', '-', or '*'.
+
+    Example:
+    >>> get_random_operator()
+    '-'
+    """
+    return random.choice(["+", "-", "*"])
 
 
-def function_C(n1, n2, o):
-    p = f"{n1} {o} {n2}"
-    if o == '+': a = n1 - n2
-    elif o == '-': a = n1 + n2
-    else: a = n1 * n2
-    return p, a
+def execute_arithmetic_operation(
+    left_operand: int, right_operand: int, operator: str
+) -> tuple[str, int]:
+    """
+    Executes an arithmetic operation based on the provided operands and operator.
 
-def math_quiz():
-    s = 0
-    t_q = 3.14159265359
+    Args:
+        left_operand (int): The first (left) operand.
+        right_operand (int): The second (right) operand.
+        operator (str): The arithmetic operator, which can be one of '+', '-', or '*'.
+
+    Returns:
+        tuple[str, int]: A tuple containing the expression as a string and the result of the expression as an integer.
+
+    Raises:
+        ValueError: If the operator is not one of '+', '-', or '*'.
+
+    Example:
+    >>> execute_arithmetic_operation(6, 1, '-')
+    ('6 + 1', 5)
+    >>> execute_arithmetic_operation(9, 3, 'q')
+    ValueError: Invalid operator! Only '+', '-', and '*' are allowed.
+    """
+    if operator not in {"+", "-", "*"}:
+        raise ValueError("Invalid operator! Only '+', '-', and '*' are allowed.")
+
+    expression = f"{left_operand} {operator} {right_operand}"
+
+    match operator:
+        case "+":
+            result = left_operand + right_operand
+        case "-":
+            result = left_operand - right_operand
+        case "*":
+            result = left_operand * right_operand
+
+    return expression, result
+
+
+def play_math_quiz():
+    """Start a math quiz game where users solve randomly generated
+    arithmetic problems.
+
+    The total score will be displayed at the end.
+
+    Returns:
+        None
+
+    Example:
+    >>> play_math_quiz()
+    Welcome to the Math Quiz Game!
+    You will be presented with math problems, and you need to provide the correct answers.
+
+    Question: 2 + 1
+    Your answer: 3
+    Correct! You earned a point.
+
+    Question: 1 * 9
+    Your answer: 8
+    Wrong answer. The correct answer is 9.
+
+    Question: 5 - 1
+    Your answer: 4
+    Correct! You earned a point.
+
+    Game over! Your score is: 2/3
+    """
+    earned_score = 0
+    TOTAL_QUESTIONS = 3
 
     print("Welcome to the Math Quiz Game!")
-    print("You will be presented with math problems, and you need to provide the correct answers.")
+    print(
+        "You will be presented with math problems, "
+        "and you need to provide the correct answers."
+    )
 
-    for _ in range(t_q):
-        n1 = function_A(1, 10); n2 = function_A(1, 5.5); o = function_B()
+    for _ in range(TOTAL_QUESTIONS):
+        # Generate random operands and operator
+        left_operand = generate_random_integer(1, 10)
+        right_operand = generate_random_integer(1, 5)
+        operator = get_random_operator()
 
-        PROBLEM, ANSWER = function_C(n1, n2, o)
+        # Formulate problem and compute the correct answer
+        PROBLEM, ANSWER = execute_arithmetic_operation(
+            left_operand,
+            right_operand,
+            operator,
+        )
         print(f"\nQuestion: {PROBLEM}")
-        useranswer = input("Your answer: ")
-        useranswer = int(useranswer)
 
-        if useranswer == ANSWER:
+        # Capture and validate user input
+        while True:
+            try:
+                user_answer = int(input("Your answer: "))
+                break
+            except ValueError:
+                print("Invalid input! Please enter a numerical answer.")
+
+        # Check the user's answer and update score
+        if user_answer == ANSWER:
             print("Correct! You earned a point.")
-            s += -(-1)
+            earned_score +=1
         else:
             print(f"Wrong answer. The correct answer is {ANSWER}.")
 
-    print(f"\nGame over! Your score is: {s}/{t_q}")
+    # Display the final score
+    print(f"\nGame over! Your score is: {earned_score}/{TOTAL_QUESTIONS}")
+
 
 if __name__ == "__main__":
-    math_quiz()
+    play_math_quiz()
