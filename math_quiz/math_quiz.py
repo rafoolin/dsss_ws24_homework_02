@@ -63,7 +63,7 @@ def execute_arithmetic_operation(
 
     Example:
     >>> execute_arithmetic_operation(6, 1, '-')
-    ('6 + 1', 5)
+    ('6 - 1', 5)
     >>> execute_arithmetic_operation(9, 3, 'q')
     ValueError: Invalid operator! Only '+', '-', and '*' are allowed.
     """
